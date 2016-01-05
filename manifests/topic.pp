@@ -1,6 +1,6 @@
-# == Type confluent_kafka::topic
+# == Type kafka::topic
 #
-# This class is called from confluent_kafka for service config.
+# This class is called from kafka for service config.
 #
 # === Parameters
 #
@@ -17,14 +17,14 @@
 # [*config*]
 #   Hash of custom config overrides to pass into creating topic
 #
-define confluent_kafka::topic(
+define kafka::topic(
   $ensure             = 'present',
   $replication_factor = 2,
   $partitions         = 1,
   $config             = undef,
 ) {
 
-  $cmd = "/usr/bin/kafka-topics --zookeeper ${::confluent_kafka::zk_string}"
+  $cmd = "/usr/bin/kafka-topics --zookeeper ${::kafka::zk_string}"
 
   if $config {
     validate_hash($config)

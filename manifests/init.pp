@@ -1,4 +1,4 @@
-# == Class: confluent_kafka
+# == Class: kafka
 #
 # Used to setup, install and intialize a Kafka broker
 #
@@ -62,39 +62,38 @@
 #   Override Log4J file
 #
 
-class confluent_kafka (
-  $package_name      = $::confluent_kafka::params::package_name,
-  $service_name      = $::confluent_kafka::params::service_name,
-  $brokers           = $::confluent_kafka::params::brokers,
-  $scala_version     = $::confluent_kafka::params::scala_version,
-  $version           = $::confluent_kafka::params::version,
-  $install_java      = $::confluent_kafka::params::install_java,
-  $install_service   = $::confluent_kafka::params::install_service,
-  $restart_on_change = $::confluent_kafka::params::restart_on_change,
-  $manage_service    = $::confluent_kafka::params::manage_service,
-  $manage_repo       = $::confluent_kafka::params::manage_repo,
-  $kafka_config      = $::confluent_kafka::params::kafka_config_defaults,
-  $zk_hosts          = $::confluent_kafka::params::zk_hosts,
-  $zk_chroot         = $::confluent_kafka::params::zk_chroot,
-  $log_dirs          = $::confluent_kafka::params::log_dirs,
-  $app_log_dir       = $::confluent_kafka::params::app_log_dir,
-  $jvm_heap_mem      = $::confluent_kafka::params::jvm_heap_mem,
-  $jvm_perf_opts     = $::confluent_kafka::params::jvm_perf_opts,
-  $jmx_opts          = $::confluent_kafka::params::jmx_opts,
-  $log4j_opts        = $::confluent_kafka::params::log4j_opts,
+class kafka (
+  $package_name      = $::kafka::params::package_name,
+  $service_name      = $::kafka::params::service_name,
+  $brokers           = $::kafka::params::brokers,
+  $scala_version     = $::kafka::params::scala_version,
+  $version           = $::kafka::params::version,
+  $install_java      = $::kafka::params::install_java,
+  $install_service   = $::kafka::params::install_service,
+  $restart_on_change = $::kafka::params::restart_on_change,
+  $manage_service    = $::kafka::params::manage_service,
+  $manage_repo       = $::kafka::params::manage_repo,
+  $kafka_config      = $::kafka::params::kafka_config_defaults,
+  $zk_hosts          = $::kafka::params::zk_hosts,
+  $log_dirs          = $::kafka::params::log_dirs,
+  $app_log_dir       = $::kafka::params::app_log_dir,
+  $jvm_heap_mem      = $::kafka::params::jvm_heap_mem,
+  $jvm_perf_opts     = $::kafka::params::jvm_perf_opts,
+  $jmx_opts          = $::kafka::params::jmx_opts,
+  $log4j_opts        = $::kafka::params::log4j_opts,
 
-) inherits ::confluent_kafka::params {
+) inherits ::kafka::params {
 
   # Verification
-  validate_array($log_dirs)
+  
   validate_array($zk_hosts)
   validate_hash($brokers)
   validate_hash($kafka_config)
 
-  $zk_string = join( [join($::confluent_kafka::zk_hosts, ','), $::confluent_kafka::zk_chroot] )
+  $zk_string = join($::kafka::zk_hosts, ',')
 
-  class { '::confluent_kafka::install': } ->
-  class { '::confluent_kafka::config': } ->
-  class { '::confluent_kafka::service': } ->
-  Class['::confluent_kafka']
+  class { '::kafka::install': } ->
+  class { '::kafka::config': } ->
+  class { '::kafka::service': } ->
+  Class['::kafka']
 }

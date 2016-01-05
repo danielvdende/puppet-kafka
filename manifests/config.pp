@@ -1,21 +1,21 @@
-# == Class confluent_kafka::config
+# == Class kafka::config
 #
-# This class is called from confluent_kafka for service config.
+# This class is called from kafka for service config.
 #
-class confluent_kafka::config {
-  $notify_service = $confluent_kafka::restart_on_change ? {
-    true  => Class['confluent_kafka::service'],
+class kafka::config {
+  $notify_service = $kafka::restart_on_change ? {
+    true  => Class['kafka::service'],
     false => undef,
   }
 
   # validate parameters here
   $tmp_config = {
-    'zookeeper.connect' => $::confluent_kafka::zk_string,
-    'broker.id'         => $::confluent_kafka::brokers[$::fqdn],
-    'log.dirs'          => join($::confluent_kafka::log_dirs, ',')
+    'zookeeper.connect' => $::kafka::zk_string,
+    'broker.id'         => '1', #$::kafka::brokers[$::fqdn],
+    'log.dirs'          => $::kafka::log_dirs
   }
 
-  $kafka_config = merge($::confluent_kafka::params::kafka_config_defaults, $::confluent_kafka::kafka_config, $tmp_config)
+  $kafka_config = merge($::kafka::params::kafka_config_defaults, $::kafka::kafka_config, $tmp_config)
 
   File {
     owner   => 'kafka',
@@ -25,18 +25,20 @@ class confluent_kafka::config {
   }
 
   file { '/etc/default/kafka':
-    content => template('confluent_kafka/kafka.defaults.erb'),
+    content => template('kafka/kafka.defaults.erb'),
   }
 
-  file { '/etc/kafka/server.properties':
-    content => template('confluent_kafka/server.properties.erb'),
+  file { "${::kafka::conf_dir}/server.properties":
+    content => template('kafka/server.properties.erb'),
+    require => File[$::kafka::conf_dir]
   }
 
-  file { '/etc/kafka/log4j.properties':
-    content => template('confluent_kafka/log4j.properties.erb'),
+  file { "${::kafka::conf_dir}/log4j.properties":
+    content => template('kafka/log4j.properties.erb'),
+    require => File[$::kafka::conf_dir]
   }
 
-  file { [$::confluent_kafka::log_dirs, $::confluent_kafka::app_log_dir]:
+  file { [$::kafka::log_dirs, $::kafka::app_log_dir, $::kafka::conf_dir]:
     ensure => directory,
   }
 

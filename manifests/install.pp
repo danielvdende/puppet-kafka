@@ -1,11 +1,11 @@
-# == Class confluent_kafka::install
+# == Class kafka::install
 #
-# This class is called from confluent_kafka for install.
+# This class is called from kafka for install.
 #
-class confluent_kafka::install {
+class kafka::install {
   case $::osfamily {
     'Debian': {
-      if $::confluent_kafka::manage_repo {
+      if $::kafka::manage_repo {
         include apt
         apt::source { 'confluent':
           location          => 'http://packages.confluent.io/deb/1.0',
@@ -24,17 +24,42 @@ class confluent_kafka::install {
         }
       }
     }
-  }
-
-  if $::confluent_kafka::install_java {
-    class { 'java':
-      distribution => 'jdk',
+    'RedHat': {
+      # parameter ensure is not supported before Puppet 3.5
+      if versioncmp($::puppetversion, '3.5.0') >= 0 {
+        yumrepo { $::kafka::reponame:
+          ensure    => present,
+          descr     => $::kafka::repodescr,
+          baseurl   => $::kafka::repourl,
+          enabled   => 1,
+          sslverify => 0,
+          gpgcheck  => 0
+        }
+      } else {
+        yumrepo { $::kafka::reponame:
+          descr     => $::kafka::repodescr,
+          baseurl   => $::kafka::repourl,
+          enabled   => 1,
+          sslverify => 0,
+          gpgcheck  => 0
+        }
+      }
     }
   }
 
-  package { "${::confluent_kafka::package_name}-${::confluent_kafka::scala_version}":
-    ensure => $::confluent_kafka::version,
+  if $::kafka::install_java {
+    package{$::kafka::java_package:}
+    package { "${::kafka::package_name}":
+      ensure  => present,
+      require => Package[$::kafka::java_package]
+    }
+  } else {
+    package { "${::kafka::package_name}":
+      ensure => present,
+    }
   }
+
+
 
   group { 'kafka':
     ensure => present,
@@ -42,16 +67,17 @@ class confluent_kafka::install {
 
   user { 'kafka':
     ensure  => present,
-    shell   => '/bin/false',
+    shell   => '/bin/bash',
     require => Group['kafka'],
   }
 
-  if $::confluent_kafka::install_service {
-    file { "/etc/init.d/${::confluent_kafka::service_name}":
+  if $::kafka::install_service {
+    file { "/etc/init.d/${::kafka::service_name}":
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
-      source => 'puppet:///modules/confluent_kafka/kafka.init',
+      source => 'puppet:///modules/kafka/kafka.init',
+      require => Package["${::kafka::package_name}"]
     }
   }
 

@@ -1,27 +1,31 @@
-# == Class confluent_kafka::params
+# == Class kafka::params
 #
-# This class is meant to be called from confluent_kafka.
+# This class is meant to be called from kafka.
 # It sets variables according to platform.
 #
-class confluent_kafka::params {
+class kafka::params {
   $scala_version     = '2.10.4'
   $service_name      = 'kafka'
-  $package_name      = "confluent-kafka"
+  $package_name      = "kafka"
   $version           = '0.8.2.0-1'
-  $install_java      = false
+  $install_java      = true
+  $java_package      = 'java-1.8.0-openjdk'
   $install_service   = true
   $restart_on_change = false
   $manage_service    = true
   $manage_repo       = true
-  $zk_hosts          = ['localhost:2181']
-  $zk_chroot         = ''
+  $reponame          = 'kafka'
+  $repourl           = 'file:///kafka/'
+  $repodescr         = 'descr'
+  $zk_hosts          = ['node1.devshed.vagrant:2181']
   $max_nofiles       = '65535'
-  $log_dirs          = ['/tmp/kafka-logs']
+  $log_dirs           = '/tmp/kafka-logs'
   $app_log_dir       = '/var/log/kafka'
+  $conf_dir          = '/etc/kafka'
   $jvm_heap_mem      = '-Xmx1G -Xms1G'
   $jvm_perf_opts     = '-XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35'
   $jmx_opts          = '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote.port=9999'
-  $log4j_opts        = '-Dlog4j.configuration=file:/etc/kafka/log4j.properties'
+  $log4j_opts        = "-Dlog4j.configuration=file:${conf_dir}/log4j.properties"
 
   $brokers           = {
       'localhost' => 0,

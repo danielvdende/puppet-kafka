@@ -1,69 +1,99 @@
 #!/bin/sh
+#
+# Managed by puppet
+# Init file for Apache Kafka
+#
+# chkconfig: 35 85 15
+# description: Apache Kafka is a distributed publish-subscribe messaging system
+# pidfile: /var/run/kafka.pid
 
 NAME=kafka
-CONFIG_PATH=/etc/kafka
-DEFAULT=/etc/default/$NAME
-KAFKA_PATH=/usr/bin
+PID_FILE=/var/run/$NAME.pid
 KAFKA_USER=kafka
-KAFKA_GROUP=kafka
 
-KAFKA_PID="/var/run/$NAME.pid"
+DAEMON="/opt/kafka/bin/kafka-server-start.sh"
+DAEMON_OPTS="/etc/kafka/server.properties"
 
+export KAFKA_JMX_OPTS="-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Dcom.sun.management.jmxremote.port=9990"
 
-# Make sure kafka is started with system locale
-if [ -r /etc/default/locale ]; then
-        . /etc/default/locale
-        export LANG
-fi
+start() {
+  ulimit -n 65536
+  ulimit -s 10240
+  ulimit -c unlimited
+  if [ -f $PID_FILE ]
+  then
+    PID=`cat $PID_FILE`
+    if [ ! -z "`ps -ef | awk '{print $2}' | grep "^$PID$"`" ]
+    then
+      echo "$PID_FILE exists, process is already running"
+      exit 0
+    else
+      echo "$PID_FILE exists but the process is not running. Deleting $PID_FILE and re-trying"
+      rm -f $PID_FILE
+      start
+    fi
+  else
+    /bin/su $KAFKA_USER -c "KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > /var/log/kafka/server.out 2> /var/log/kafka/server.err &"
+    sleep 2
+    PID=`ps ax | grep -E '[k]afka.Kafka' | awk '{print $1}'`
+    echo $PID > $PID_FILE;
+    echo "$NAME started $PID"
+  fi
+}
 
-. /lib/lsb/init-functions
+stop() {
+  if [ ! -f $PID_FILE ]
+  then
+    echo "$PID_FILE does not exist, process is not running"
+    return 1
+  else
+    kill `cat $PID_FILE`;
+    rm -f $PID_FILE;
+    echo "$NAME stopped"
+    return 0
+  fi
+}
 
-if [ -f "$DEFAULT" ]; then
-    . "$DEFAULT"
-fi
+status() {
+  if [ -f $PID_FILE ]
+  then
+    PID=`cat $PID_FILE`
+    if [ -z "`ps -ef | awk '{print $2}' | grep "^$PID$"`" ]
+    then
+      echo "$NAME stopped but pid file exists"
+      exit 1
+    else
+      echo "$NAME running with pid $PID"
+      exit 0
+    fi
+  else
+    echo "$NAME stopped"
+    exit 1
+  fi
+}
 
 case "$1" in
-  start)
-        # Start daemon.
-        echo "Starting $NAME";
-        start-stop-daemon --start -b -u "$KAFKA_USER" -g "$KAFKA_GROUP" \
-            -c "$KAFKA_USER" -m -p "$KAFKA_PID" \
-            -x "$KAFKA_PATH/kafka-server-start" -- $CONFIG_PATH/server.properties
-        ;;
-  stop)
-        # Stop daemons.
-        echo "Shutting down $NAME";
-        start-stop-daemon --stop --pidfile "$KAFKA_PID" \
-            --user "$KAFKA_USER" \
-            --retry=TERM/120/KILL/5
-        ;;
-  restart)
-        $0 stop
-        sleep 2
-        $0 start
-        ;;
   status)
-       set +e
-       start-stop-daemon --test --start --pidfile "$KAFKA_PID" \
-                --user "$KAFKA_USER" --exec "java" \
-                >/dev/null 2>&1
-        if [ "$?" = "0" ]; then
+    status
+	;;
+  start)
+    echo "Starting daemon: "$NAME
+    start
+	;;
+  stop)
+    echo "Stopping daemon: "$NAME
+    stop
+	;;
+  restart)
+    echo "Restarting daemon: "$NAME
+	  stop
+    sleep 2
+    start
+	;;
 
-                if [ -f "$KAFKA_PID" ]; then
-                    log_success_msg "$NAME is not running, but pid file exists."
-                        exit 1
-                else
-                    log_success_msg "$NAME is not running."
-                        exit 3
-                fi
-        else
-                log_success_msg "$NAME is running with pid `cat $KAFKA_PID`"
-        fi
-        set -e
-        ;;
   *)
-        echo "Usage: $0 {start|stop|restart|status}"
-        exit 1
+	echo "Usage: "$1" {status|start|stop|restart}"
+	exit 1
 esac
 
 exit 0
