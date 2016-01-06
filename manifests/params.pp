@@ -4,20 +4,18 @@
 # It sets variables according to platform.
 #
 class kafka::params {
-  $scala_version                                  = '2.10.5'
   $service_name                                   = 'kafka'
   $package_name                                   = 'kafka'
-  $version                                        = '0.9.0.0-1'
   $install_java                                   = true
   $java_package                                   = 'java-1.8.0-openjdk'
   $install_service                                = true
   $restart_on_change                              = false
   $manage_service                                 = true
   $manage_repo                                    = true
-  $reponame                                       = 'kafka'
-  $repourl                                        = 'file:///kafka/'
-  $repodescr                                      = 'descr'
-  $zookeeper_connect                              = ['node1.devshed.vagrant:2181']
+  $reponame                                       = ''
+  $repourl                                        = ''
+  $repodescr                                      = ''
+  $zookeeper_connect                              = []
   $max_nofiles                                    = '65535'
   $log_dirs                                       = '/tmp/kafka-logs'
   $app_log_dir                                    = '/var/log/kafka'

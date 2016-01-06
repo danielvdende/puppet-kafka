@@ -5,19 +5,13 @@
 # === Parameters
 #
 # [*package_name*]
-#   Base name of the package, we append *scala_version*  to get full name
+#   Base name of the package
 #
 # [*service_name*]
 #   Name of the service to install and use
 #
 # [*brokers*]
 #   Hash map hostname to broker id
-#
-# [*scala_version*]
-#   Scala you are using, used to install correct package
-#
-# [*version*]
-#   Version of Kafka to install
 #
 # [*install_java*]
 #   Whether or not we should install java
@@ -62,30 +56,9 @@
 #   Override Log4J file
 #
 
-# $package_name      = $::kafka::params::package_name,
-# $service_name      = $::kafka::params::service_name,
-# $brokers           = $::kafka::params::brokers,
-# $scala_version     = $::kafka::params::scala_version,
-# $version           = $::kafka::params::version,
-# $install_java      = $::kafka::params::install_java,
-# $install_service   = $::kafka::params::install_service,
-# $restart_on_change = $::kafka::params::restart_on_change,
-# $manage_service    = $::kafka::params::manage_service,
-# $manage_repo       = $::kafka::params::manage_repo,
-# $kafka_config      = $::kafka::params::kafka_config_defaults,
-# $zk_hosts          = $::kafka::params::zk_hosts,
-# $log_dirs          = $::kafka::params::log_dirs,
-# $app_log_dir       = $::kafka::params::app_log_dir,
-# $jvm_heap_mem      = $::kafka::params::jvm_heap_mem,
-# $jvm_perf_opts     = $::kafka::params::jvm_perf_opts,
-# $jmx_opts          = $::kafka::params::jmx_opts,
-# $log4j_opts        = $::kafka::params::log4j_opts,
-
 class kafka (
-  $scala_version                                  = $::kafka::params::scala_version,
   $service_name                                   = $::kafka::params::service_name,
   $package_name                                   = $::kafka::params::package_name,
-  $version                                        = $::kafka::params::version,
   $install_java                                   = $::kafka::params::install_java,
   $java_package                                   = $::kafka::params::java_package,
   $install_service                                = $::kafka::params::install_service,
