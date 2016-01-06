@@ -55,7 +55,7 @@ class kafka::install {
     }
   } else {
     package { "${::kafka::package_name}":
-      ensure => present,
+      ensure => present
     }
   }
 
@@ -68,7 +68,7 @@ class kafka::install {
   user { 'kafka':
     ensure  => present,
     shell   => '/bin/bash',
-    require => Group['kafka'],
+    require => Group['kafka']
   }
 
   if $::kafka::install_service {

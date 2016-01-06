@@ -1,9 +1,9 @@
 # Have to export these log variables since currently a bug in kafka-server-start
 # that doesnt export these variables
-export LOG_DIR="<%= scope.lookupvar('confluent_kafka::app_log_dir') %>"
-export KAFKA_LOG4J_OPTS="<%= scope.lookupvar('confluent_kafka::log4j_opts') %>"
+export LOG_DIR="<%= scope.lookupvar('kafka::app_log_dir') %>"
+export KAFKA_LOG4J_OPTS="<%= scope.lookupvar('kafka::log4j_opts') %>"
 
-export KAFKA_HEAP_OPTS="<%= scope.lookupvar('confluent_kafka::jvm_heap_mem') %>"
-export KAFKA_JMX_OPTS="<%= scope.lookupvar('confluent_kafka::jmx_opts') %>"
-export KAFKA_JVM_PERFORMANCE_OPTS="<%= scope.lookupvar('confluent_kafka::jvm_perf_opts')%>"
-ulimit -n <%= scope.lookupvar('confluent_kafka::params::max_nofiles')%>
+export KAFKA_HEAP_OPTS="<%= scope.lookupvar('kafka::jvm_heap_mem') %>"
+export KAFKA_JMX_OPTS="<%= scope.lookupvar('kafka::jmx_opts') %>"
+export KAFKA_JVM_PERFORMANCE_OPTS="<%= scope.lookupvar('kafka::jvm_perf_opts')%>"
+ulimit -n <%= scope.lookupvar('kafka::params::max_nofiles')%>
