@@ -1,12 +1,12 @@
 {
-  "name": "chartbeat-confluent_kafka",
-  "version": "0.4.0",
-  "author": "Chartbeat",
-  "summary": "Installs Confluent's Kafka Package",
-  "license": "MIT",
-  "source": "http://github.com/chartbeat-labs/puppet-confluent-kafka",
-  "project_page": "https://github.com/chartbeat-labs/puppet-confluent-kafka",
-  "issues_url": "https://github.com/chartbeat-labs/puppet-confluent-kafka/issues",
+  "name": "puppet_kafka",
+  "version": "0.1.0",
+  "author": "Daniel van der Ende",
+  "summary": "This module installs an Apache Kafka broker using either a custom rpm, or confluent's provided rpm",
+  "license": "Apache 2.0",
+  "source": "https://github.com/danielvdende/puppet-kafka",
+  "project_page": "https://github.com/danielvdende/puppet-kafka",
+  "issues_url": "https://github.com/danielvdende/puppet-kafka/issues",
   "dependencies": [
     {
       "name": "puppetlabs-stdlib",

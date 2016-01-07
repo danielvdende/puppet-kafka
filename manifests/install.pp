@@ -25,23 +25,25 @@ class kafka::install {
       }
     }
     'RedHat': {
-      # parameter ensure is not supported before Puppet 3.5
-      if versioncmp($::puppetversion, '3.5.0') >= 0 {
-        yumrepo { $::kafka::reponame:
-          ensure    => present,
-          descr     => $::kafka::repodescr,
-          baseurl   => $::kafka::repourl,
-          enabled   => 1,
-          sslverify => 0,
-          gpgcheck  => 0
-        }
-      } else {
-        yumrepo { $::kafka::reponame:
-          descr     => $::kafka::repodescr,
-          baseurl   => $::kafka::repourl,
-          enabled   => 1,
-          sslverify => 0,
-          gpgcheck  => 0
+      if $::kafka::manage_repo {
+        # parameter ensure is not supported before Puppet 3.5
+        if versioncmp($::puppetversion, '3.5.0') >= 0 {
+          yumrepo { $::kafka::reponame:
+            ensure    => present,
+            descr     => $::kafka::repodescr,
+            baseurl   => $::kafka::repourl,
+            enabled   => 1,
+            sslverify => 0,
+            gpgcheck  => 0
+          }
+        } else {
+          yumrepo { $::kafka::reponame:
+            descr     => $::kafka::repodescr,
+            baseurl   => $::kafka::repourl,
+            enabled   => 1,
+            sslverify => 0,
+            gpgcheck  => 0
+          }
         }
       }
     }
@@ -49,6 +51,7 @@ class kafka::install {
 
   if $::kafka::install_java {
     package{$::kafka::java_package:}
+    # only install kafka if java is not installed.
     package { "${::kafka::package_name}":
       ensure  => present,
       require => Package[$::kafka::java_package]
@@ -58,8 +61,6 @@ class kafka::install {
       ensure => present
     }
   }
-
-
 
   group { 'kafka':
     ensure => present,
