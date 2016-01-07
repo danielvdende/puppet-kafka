@@ -8,4 +8,4 @@ fixtures:
       ref: "2.1.0"
 
   symlinks:
-    confluent_kafka: "#{source_dir}"
+    kafka: "#{source_dir}"
