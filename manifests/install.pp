@@ -9,10 +9,10 @@ class kafka::install {
   $group        = $::kafka::group
   $service_name = $::kafka::service_name
 
+  # Add repositories to package manager via this module if desired.
   if $::kafka::manage_repo{
     class { '::kafka::repo': }
   }
-
 
   if $::kafka::install_java {
     package{$::kafka::java_package:}

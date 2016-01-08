@@ -2,8 +2,8 @@ class kafka::repo{
   case $::osfamily {
     'Debian': {
       include apt
-      apt::source { $::kafka::apt_reponame:
-        location          => $::kafka::apt_repourl,
+      apt::source { 'kafka':
+        location          => 'http://packages.confluent.io/deb/2.0',
         release           => 'stable main',
         architecture      => 'all',
         repos             => '',
@@ -17,18 +17,18 @@ class kafka::repo{
     'RedHat': {
       # parameter ensure is not supported before Puppet 3.5
       if versioncmp($::puppetversion, '3.5.0') >= 0 {
-        yumrepo { $::kafka::yum_reponame:
+        yumrepo { 'kafka':
           ensure    => present,
-          descr     => $::kafka::yum_repodescr,
-          baseurl   => $::kafka::yum_repourl,
+          descr     => 'Confluent repository for 2.0.x packages',
+          baseurl   => "http://packages.confluent.io/rpm/2.0",
           enabled   => 1,
           sslverify => 0,
           gpgcheck  => 0
         }
       } else {
-        yumrepo { $::kafka::yum_reponame:
-          descr     => $::kafka::yum_repodescr,
-          baseurl   => $::kafka::yum_repourl,
+        yumrepo { 'kafka':
+          descr     => 'Confluent repository for 2.0.x packages',
+          baseurl   => "http://packages.confluent.io/rpm/2.0",
           enabled   => 1,
           sslverify => 0,
           gpgcheck  => 0

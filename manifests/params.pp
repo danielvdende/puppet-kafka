@@ -285,9 +285,6 @@
 #                                                   type: integer
 class kafka::params {
   $app_log_dir                                    = '/var/log/kafka'
-  $apt_repodescr                                  = "Confluent repository for 2.0.x packages"
-  $apt_reponame                                   = "Confluent repository for 2.0.x packages"
-  $apt_repourl                                    = "http://packages.confluent.io/deb/2.0"
   $auto_create_topics_enable                      = true
   $auto_leader_rebalance_enable                   = true
   $background_threads                             = 4
@@ -360,9 +357,6 @@ class kafka::params {
   $socket_request_max_bytes                       = 104857600
   $socket_send_buffer_bytes                       = 102400
   $user                                           = 'kafka'
-  $yum_repodescr                                  = "Confluent repository for 2.0.x packages"
-  $yum_reponame                                   = "Confluent repository for 2.0.x packages"
-  $yum_repourl                                    = "http://packages.confluent.io/rpm/2.0"
   $zookeeper_connect                              = []
   $zookeeper_connection_timeout_ms                = 6000
   $zookeeper_session_timeout_ms                   = 6000
