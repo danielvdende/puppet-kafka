@@ -50,6 +50,9 @@
 #                                                   purgatory
 #                                                   type: integer
 #
+# $group::                                          The group name to install/run Kafka under.
+#                                                   type: string
+#
 # $install_java::                                   Enable installation of Java by this module.
 #                                                   type: boolean
 #
@@ -72,7 +75,7 @@
 #                                                   type: integer
 #
 # $jvm_perf_opts::                                  Any additional JVM performance tweaking options.
-#                                                   type: integer
+#                                                   type: sting
 #
 # $leader_imbalance_check_interval_seconds::        The frequency with which the partition rebalance check is triggered
 #                                                   by the controller in seconds
@@ -98,7 +101,7 @@
 #                                                   type: boolean
 #
 # $log_cleaner_io_buffer_load_factor::              Log cleaner dedupe buffer load factor.
-#                                                   type: integer
+#                                                   type: numeric
 #
 # $log_cleaner_io_buffer_size::                     Total memory used for log clean IO buffers across all cleaner
 #                                                   threads
@@ -266,6 +269,9 @@
 # $socket_send_buffer_bytes::                       The send buffer (SO_SNDBUF) used by the socket server
 #                                                   type: integer
 #
+# $user::                                           The user to install/run Kafka under.
+#                                                   type: string
+#
 # $zookeeper_connect::                              List of zookeeper nodes to use. Should be in the form hostname:port
 #                                                   type: array
 #
@@ -281,17 +287,17 @@ class kafka::params {
   $app_log_dir                                    = '/var/log/kafka'
   $auto_create_topics_enable                      = true
   $auto_leader_rebalance_enable                   = true
-  $background_threads                             = '4'
-  $broker_id                                      = '1'
+  $background_threads                             = 4
+  $broker_id                                      = undef
   $conf_dir                                       = '/etc/kafka'
   $controlled_shutdown_enable                     = true
-  $controlled_shutdown_max_retries                = '3'
-  $controlled_shutdown_retry_backoff_ms           = '5000'
-  $controller_message_queue_size                  = '10'
-  $controller_socket_timeout_ms                   = '30000'
-  $default_replication_factor                     = '1'
+  $controlled_shutdown_max_retries                = 3
+  $controlled_shutdown_retry_backoff_ms           = 5000
+  $controller_message_queue_size                  = 10
+  $controller_socket_timeout_ms                   = 30000
+  $default_replication_factor                     = 1
   $delete_topic_enable                            = false
-  $fetch_purgatory_purge_interval_requests        = '10000'
+  $fetch_purgatory_purge_interval_requests        = 10000
   $group                                          = 'kafka'
   $install_java                                   = true
   $install_service                                = true
@@ -299,63 +305,63 @@ class kafka::params {
   $jmx_opts                                       = '-Dcom.sun.management.jmxremote -Dcom.sun.management.jmxremote.authenticate=false -Dcom.sun.management.jmxremote.ssl=false -Djava.net.preferIPv4Stack=true -Dcom.sun.management.jmxremote.port=9999'
   $jvm_heap_mem                                   = '-Xmx1G -Xms1G'
   $jvm_perf_opts                                  = '-XX:PermSize=48m -XX:MaxPermSize=48m -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35'
-  $leader_imbalance_check_interval_seconds        = '300'
-  $leader_imbalance_per_broker_percentage         = '10'
-  $log_cleaner_backoff_ms                         = '15000'
-  $log_cleaner_dedupe_buffer_size                 = '524288000'
-  $log_cleaner_delete_retention_ms                = '86400000'
+  $leader_imbalance_check_interval_seconds        = 300
+  $leader_imbalance_per_broker_percentage         = 10
+  $log_cleaner_backoff_ms                         = 15000
+  $log_cleaner_dedupe_buffer_size                 = 524288000
+  $log_cleaner_delete_retention_ms                = 86400000
   $log_cleaner_enable                             = false
-  $log_cleaner_io_buffer_load_factor              = '0.9'
-  $log_cleaner_io_buffer_size                     = '524288'
-  $log_cleaner_min_cleanable_ratio                = '0.5'
-  $log_cleaner_threads                            = '1'
+  $log_cleaner_io_buffer_load_factor              = 0.9
+  $log_cleaner_io_buffer_size                     = 524288
+  $log_cleaner_min_cleanable_ratio                = 0.5
+  $log_cleaner_threads                            = 1
   $log_cleanup_policy                             = 'delete'
   $log_dirs                                       = '/tmp/kafka-logs'
-  $log_flush_interval_messages                    = '10000'
-  $log_flush_interval_ms                          = '3000'
-  $log_flush_offset_checkpoint_interval_ms        = '60000'
-  $log_flush_scheduler_interval_ms                = '3000'
-  $log_index_interval_bytes                       = '4096'
-  $log_index_size_max_bytes                       = '10485760'
-  $log_retention_bytes                            = '-1'
-  $log_retention_check_interval_ms                = '300000'
-  $log_retention_hours                            = '168'
-  $log_retention_minutes                          = '10080'
-  $log_roll_hours                                 = '168'
-  $log_segment_bytes                              = '1073741824'
+  $log_flush_interval_messages                    = 10000
+  $log_flush_interval_ms                          = 3000
+  $log_flush_offset_checkpoint_interval_ms        = 60000
+  $log_flush_scheduler_interval_ms                = 3000
+  $log_index_interval_bytes                       = 4096
+  $log_index_size_max_bytes                       = 10485760
+  $log_retention_bytes                            = -1
+  $log_retention_check_interval_ms                = 300000
+  $log_retention_hours                            = 168
+  $log_retention_minutes                          = 10080
+  $log_roll_hours                                 = 168
+  $log_segment_bytes                              = 1073741824
   $log4j_opts                                     = "-Dlog4j.configuration=file:${conf_dir}/log4j.properties"
   $manage_repo                                    = true
   $manage_service                                 = true
-  $max_nofiles                                    = '65535'
-  $message_max_bytes                              = '1000000'
-  $num_io_threads                                 = '8'
-  $num_network_threads                            = '3'
-  $num_partitions                                 = '1'
-  $num_recovery_threads_per_data_dir              = '1'
-  $num_replica_fetchers                           = '1'
-  $offset_metadata_max_bytes                      = '1024'
+  $max_nofiles                                    = 65535
+  $message_max_bytes                              = 1000000
+  $num_io_threads                                 = 8
+  $num_network_threads                            = 3
+  $num_partitions                                 = 1
+  $num_recovery_threads_per_data_dir              = 1
+  $num_replica_fetchers                           = 1
+  $offset_metadata_max_bytes                      = 1024
   $package_name                                   = 'kafka'
-  $port                                           = '9092'
-  $producer_purgatory_purge_interval_requests     = '10000'
-  $queued_max_requests                            = '500'
-  $replica_fetch_max_bytes                        = '10241024'
-  $replica_fetch_min_bytes                        = '1'
-  $replica_fetch_wait_max_ms                      = '500'
-  $replica_high_watermark_checkpoint_interval_ms  = '5000'
-  $replica_lag_time_max_ms                        = '10000'
-  $replica_socket_receive_buffer_bytes            = '641024'
-  $replica_socket_timeout_ms                      = '301000'
-  $repodescr                                      = ''
-  $reponame                                       = ''
-  $repourl                                        = ''
+  $port                                           = 9092
+  $producer_purgatory_purge_interval_requests     = 10000
+  $queued_max_requests                            = 500
+  $replica_fetch_max_bytes                        = 10241024
+  $replica_fetch_min_bytes                        = 1
+  $replica_fetch_wait_max_ms                      = 500
+  $replica_high_watermark_checkpoint_interval_ms  = 5000
+  $replica_lag_time_max_ms                        = 10000
+  $replica_socket_receive_buffer_bytes            = 641024
+  $replica_socket_timeout_ms                      = 301000
+  $repodescr                                      = undef
+  $reponame                                       = undef
+  $repourl                                        = undef
   $restart_on_change                              = true
   $service_name                                   = 'kafka'
-  $socket_receive_buffer_bytes                    = '102400'
-  $socket_request_max_bytes                       = '104857600'
-  $socket_send_buffer_bytes                       = '102400'
+  $socket_receive_buffer_bytes                    = 102400
+  $socket_request_max_bytes                       = 104857600
+  $socket_send_buffer_bytes                       = 102400
   $user                                           = 'kafka'
   $zookeeper_connect                              = []
-  $zookeeper_connection_timeout_ms                = '6000'
-  $zookeeper_session_timeout_ms                   = '6000'
-  $zookeeper_sync_time_ms                         = '2000'
+  $zookeeper_connection_timeout_ms                = 6000
+  $zookeeper_session_timeout_ms                   = 6000
+  $zookeeper_sync_time_ms                         = 2000
 }
