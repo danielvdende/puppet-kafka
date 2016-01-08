@@ -15,6 +15,7 @@ class kafka::config {
   $default_replication_factor                     = $::kafka::default_replication_factor
   $delete_topic_enable                            = $::kafka::delete_topic_enable
   $fetch_purgatory_purge_interval_requests        = $::kafka::fetch_purgatory_purge_interval_requests
+  $group                                          = $::kafka::group
   $leader_imbalance_check_interval_seconds        = $::kafka::leader_imbalance_check_interval_seconds
   $leader_imbalance_per_broker_percentage         = $::kafka::leader_imbalance_per_broker_percentage
   $log_cleaner_backoff_ms                         = $::kafka::log_cleaner_backoff_ms
@@ -54,23 +55,25 @@ class kafka::config {
   $replica_lag_time_max_ms                        = $::kafka::replica_lag_time_max_ms
   $replica_socket_receive_buffer_bytes            = $::kafka::replica_socket_receive_buffer_bytes
   $replica_socket_timeout_ms                      = $::kafka::replica_socket_timeout_ms
+  $restart_on_change                              = $::kafka::restart_on_change
   $socket_receive_buffer_bytes                    = $::kafka::socket_receive_buffer_bytes
   $socket_request_max_bytes                       = $::kafka::socket_request_max_bytes
   $socket_send_buffer_bytes                       = $::kafka::socket_send_buffer_bytes
+  $user                                           = $::kafka::user
   $zookeeper_connect                              = $::kafka::zookeeper_connect
   $zookeeper_connection_timeout_ms                = $::kafka::zookeeper_connection_timeout_ms
   $zookeeper_session_timeout_ms                   = $::kafka::zookeeper_session_timeout_ms
   $zookeeper_sync_time_ms                         = $::kafka::zookeeper_sync_time_ms
 
-  $notify_service = $kafka::restart_on_change ? {
+  $notify_service = $restart_on_change ? {
     true  => Class['kafka::service'],
-    false => undef,
+    false => undef
   }
 
   # specify the kafka user for all files/dirs to be created
   File {
-    owner   => 'kafka',
-    group   => 'kafka',
+    owner   => $::kafka::user,
+    group   => $::kafka::group,
     mode    => '0644',
     notify  => $notify_service,
   }

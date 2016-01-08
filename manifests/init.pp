@@ -17,6 +17,7 @@ class kafka (
   $default_replication_factor                     = $::kafka::params::default_replication_factor,
   $delete_topic_enable                            = $::kafka::params::delete_topic_enable,
   $fetch_purgatory_purge_interval_requests        = $::kafka::params::fetch_purgatory_purge_interval_requests,
+  $group                                          = $::kafka::params::group,
   $install_java                                   = $::kafka::params::install_java,
   $install_service                                = $::kafka::params::install_service,
   $java_package                                   = $::kafka::params::java_package,
@@ -77,11 +78,12 @@ class kafka (
   $socket_receive_buffer_bytes                    = $::kafka::params::socket_receive_buffer_bytes,
   $socket_request_max_bytes                       = $::kafka::params::socket_request_max_bytes,
   $socket_send_buffer_bytes                       = $::kafka::params::socket_send_buffer_bytes,
+  $user                                           = $::kafka::params::user,
   $zookeeper_connect                              = $::kafka::params::zookeeper_connect,
   $zookeeper_connection_timeout_ms                = $::kafka::params::zookeeper_connection_timeout_ms,
   $zookeeper_session_timeout_ms                   = $::kafka::params::zookeeper_session_timeout_ms,
   $zookeeper_sync_time_ms                         = $::kafka::params::zookeeper_sync_time_ms
-) {
+) inherits kafka::params {
 
   class { '::kafka::install': } ->
   class { '::kafka::config': } ->

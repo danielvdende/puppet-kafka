@@ -292,6 +292,7 @@ class kafka::params {
   $default_replication_factor                     = '1'
   $delete_topic_enable                            = false
   $fetch_purgatory_purge_interval_requests        = '10000'
+  $group                                          = 'kafka'
   $install_java                                   = true
   $install_service                                = true
   $java_package                                   = 'java-1.8.0-openjdk'
@@ -347,11 +348,12 @@ class kafka::params {
   $repodescr                                      = ''
   $reponame                                       = ''
   $repourl                                        = ''
-  $restart_on_change                              = false
+  $restart_on_change                              = true
   $service_name                                   = 'kafka'
   $socket_receive_buffer_bytes                    = '102400'
   $socket_request_max_bytes                       = '104857600'
   $socket_send_buffer_bytes                       = '102400'
+  $user                                           = 'kafka'
   $zookeeper_connect                              = []
   $zookeeper_connection_timeout_ms                = '6000'
   $zookeeper_session_timeout_ms                   = '6000'

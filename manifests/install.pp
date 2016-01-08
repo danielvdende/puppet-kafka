@@ -3,6 +3,12 @@
 # This class is called from kafka for install.
 #
 class kafka::install {
+  $conf_dir     = $::kafka::conf_dir
+  $jmx_opts     = $::kafka::jmx_opts
+  $user         = $::kafka::user
+  $group        = $::kafka::group
+  $service_name = $::kafka::service_name
+
   case $::osfamily {
     'Debian': {
       if $::kafka::manage_repo {
@@ -62,14 +68,14 @@ class kafka::install {
     }
   }
 
-  group { 'kafka':
+  group { $::kafka::group:
     ensure => present,
   }
 
-  user { 'kafka':
+  user { $::kafka::user:
     ensure  => present,
     shell   => '/bin/bash',
-    require => Group['kafka']
+    require => Group[$::kafka::group]
   }
 
   if $::kafka::install_service {
@@ -77,7 +83,7 @@ class kafka::install {
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
-      source => 'puppet:///modules/kafka/kafka.init',
+      content => template('kafka/kafka.init.erb'),
       require => Package["${::kafka::package_name}"]
     }
   }
