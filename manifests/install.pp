@@ -13,16 +13,12 @@ class kafka::install {
     'Debian': {
       if $::kafka::manage_repo {
         include apt
-        apt::source { 'confluent':
-          location          => 'http://packages.confluent.io/deb/1.0',
+        apt::source { $::kafka::apt_reponame:
+          location          => $::kafka::apt_repourl,
           release           => 'stable main',
           architecture      => 'all',
           repos             => '',
           required_packages => 'debian-keyring debian-archive-keyring',
-          key               => {
-            'id'            => '1A77041E0314E6C5A486524E670540C841468433',
-            'source'        => 'http://packages.confluent.io/deb/1.0/archive.key',
-          },
           include           => {
             'deb'           => true,
             'src'           => false,
@@ -34,18 +30,18 @@ class kafka::install {
       if $::kafka::manage_repo {
         # parameter ensure is not supported before Puppet 3.5
         if versioncmp($::puppetversion, '3.5.0') >= 0 {
-          yumrepo { $::kafka::reponame:
+          yumrepo { $::kafka::yum_reponame:
             ensure    => present,
-            descr     => $::kafka::repodescr,
-            baseurl   => $::kafka::repourl,
+            descr     => $::kafka::yum_repodescr,
+            baseurl   => $::kafka::yum_repourl,
             enabled   => 1,
             sslverify => 0,
             gpgcheck  => 0
           }
         } else {
-          yumrepo { $::kafka::reponame:
-            descr     => $::kafka::repodescr,
-            baseurl   => $::kafka::repourl,
+          yumrepo { $::kafka::yum_reponame:
+            descr     => $::kafka::yum_repodescr,
+            baseurl   => $::kafka::yum_repourl,
             enabled   => 1,
             sslverify => 0,
             gpgcheck  => 0

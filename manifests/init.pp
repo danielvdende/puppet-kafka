@@ -4,6 +4,9 @@
 #
 class kafka (
   $app_log_dir                                    = $::kafka::params::app_log_dir,
+  $apt_repodescr                                  = $::kafka::params::apt_repodescr,
+  $apt_reponame                                   = $::kafka::params::apt_reponame,
+  $apt_repourl                                    = $::kafka::params::apt_repourl,
   $auto_create_topics_enable                      = $::kafka::params::auto_create_topics_enable,
   $auto_leader_rebalance_enable                   = $::kafka::params::auto_leader_rebalance_enable,
   $background_threads                             = $::kafka::params::background_threads,
@@ -70,15 +73,15 @@ class kafka (
   $replica_lag_time_max_ms                        = $::kafka::params::replica_lag_time_max_ms,
   $replica_socket_receive_buffer_bytes            = $::kafka::params::replica_socket_receive_buffer_bytes,
   $replica_socket_timeout_ms                      = $::kafka::params::replica_socket_timeout_ms,
-  $repodescr                                      = $::kafka::params::repodescr,
-  $reponame                                       = $::kafka::params::reponame,
-  $repourl                                        = $::kafka::params::repourl,
   $restart_on_change                              = $::kafka::params::restart_on_change,
   $service_name                                   = $::kafka::params::service_name,
   $socket_receive_buffer_bytes                    = $::kafka::params::socket_receive_buffer_bytes,
   $socket_request_max_bytes                       = $::kafka::params::socket_request_max_bytes,
   $socket_send_buffer_bytes                       = $::kafka::params::socket_send_buffer_bytes,
   $user                                           = $::kafka::params::user,
+  $yum_repodescr                                  = $::kafka::params::yum_repodescr,
+  $yum_reponame                                   = $::kafka::params::yum_reponame,
+  $yum_repourl                                    = $::kafka::params::yum_repourl,
   $zookeeper_connect                              = $::kafka::params::zookeeper_connect,
   $zookeeper_connection_timeout_ms                = $::kafka::params::zookeeper_connection_timeout_ms,
   $zookeeper_session_timeout_ms                   = $::kafka::params::zookeeper_session_timeout_ms,
@@ -86,6 +89,9 @@ class kafka (
 ) inherits kafka::params {
 
   validate_absolute_path($app_log_dir)
+  validate_string($apt_repodescr)
+  validate_string($apt_reponame)
+  validate_string($apt_repourl)
   validate_boolean($auto_create_topics_enable)
   validate_boolean($auto_leader_rebalance_enable)
   validate_integer($background_threads)
@@ -158,6 +164,9 @@ class kafka (
   validate_integer($socket_request_max_bytes)
   validate_integer($socket_send_buffer_bytes)
   validate_string($user)
+  validate_string($yum_repodescr)
+  validate_string($yum_reponame)
+  validate_string($yum_repourl)
   validate_array($zookeeper_connect)
   validate_integer($zookeeper_connection_timeout_ms)
   validate_integer($zookeeper_session_timeout_ms)
