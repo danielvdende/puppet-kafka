@@ -9,47 +9,10 @@ class kafka::install {
   $group        = $::kafka::group
   $service_name = $::kafka::service_name
 
-  case $::osfamily {
-    'Debian': {
-      if $::kafka::manage_repo {
-        include apt
-        apt::source { $::kafka::apt_reponame:
-          location          => $::kafka::apt_repourl,
-          release           => 'stable main',
-          architecture      => 'all',
-          repos             => '',
-          required_packages => 'debian-keyring debian-archive-keyring',
-          include           => {
-            'deb'           => true,
-            'src'           => false,
-          },
-        }
-      }
-    }
-    'RedHat': {
-      if $::kafka::manage_repo {
-        # parameter ensure is not supported before Puppet 3.5
-        if versioncmp($::puppetversion, '3.5.0') >= 0 {
-          yumrepo { $::kafka::yum_reponame:
-            ensure    => present,
-            descr     => $::kafka::yum_repodescr,
-            baseurl   => $::kafka::yum_repourl,
-            enabled   => 1,
-            sslverify => 0,
-            gpgcheck  => 0
-          }
-        } else {
-          yumrepo { $::kafka::yum_reponame:
-            descr     => $::kafka::yum_repodescr,
-            baseurl   => $::kafka::yum_repourl,
-            enabled   => 1,
-            sslverify => 0,
-            gpgcheck  => 0
-          }
-        }
-      }
-    }
+  if $::kafka::manage_repo{
+    class { '::kafka::repo': }
   }
+
 
   if $::kafka::install_java {
     package{$::kafka::java_package:}
