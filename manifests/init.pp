@@ -103,7 +103,7 @@ class kafka (
   validate_string($jmx_opts)
   validate_string($jvm_heap_mem)
   validate_string($jvm_perf_opts)
-  validate_string($leader_imbalance_check_interval_seconds)
+  validate_integer($leader_imbalance_check_interval_seconds)
   validate_numeric($leader_imbalance_per_broker_percentage)
   validate_integer($log_cleaner_backoff_ms)
   validate_integer($log_cleaner_dedupe_buffer_size)
