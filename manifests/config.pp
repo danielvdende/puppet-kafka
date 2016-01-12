@@ -27,6 +27,7 @@ class kafka::config {
   $log_cleaner_min_cleanable_ratio                = $::kafka::log_cleaner_min_cleanable_ratio
   $log_cleaner_threads                            = $::kafka::log_cleaner_threads
   $log_cleanup_policy                             = $::kafka::log_cleanup_policy
+  $log_dirs                                       = $::kafka::log_dirs
   $log_flush_interval_messages                    = $::kafka::log_flush_interval_messages
   $log_flush_interval_ms                          = $::kafka::log_flush_interval_ms
   $log_flush_offset_checkpoint_interval_ms        = $::kafka::log_flush_offset_checkpoint_interval_ms
@@ -43,6 +44,7 @@ class kafka::config {
   $num_io_threads                                 = $::kafka::num_io_threads
   $num_network_threads                            = $::kafka::num_network_threads
   $num_partitions                                 = $::kafka::num_partitions
+  $num_recovery_threads_per_data_dir              = $::kafka::num_recovery_threads_per_data_dir
   $num_replica_fetchers                           = $::kafka::num_replica_fetchers
   $offset_metadata_max_bytes                      = $::kafka::offset_metadata_max_bytes
   $port                                           = $::kafka::port
