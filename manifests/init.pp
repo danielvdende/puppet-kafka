@@ -101,7 +101,7 @@ class kafka (
   validate_bool($install_service)
   validate_string($java_package)
   validate_string($jmx_opts)
-  validate_integer($jvm_heap_mem)
+  validate_string($jvm_heap_mem)
   validate_string($jvm_perf_opts)
   validate_string($leader_imbalance_check_interval_seconds)
   validate_numeric($leader_imbalance_per_broker_percentage)
