@@ -357,7 +357,7 @@ class kafka::params {
   $socket_request_max_bytes                       = 104857600
   $socket_send_buffer_bytes                       = 102400
   $user                                           = 'kafka'
-  $zookeeper_connect                              = []
+  $zookeeper_connect                              = undef
   $zookeeper_connection_timeout_ms                = 6000
   $zookeeper_session_timeout_ms                   = 6000
   $zookeeper_sync_time_ms                         = 2000
