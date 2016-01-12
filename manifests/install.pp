@@ -19,7 +19,7 @@ class kafka::install {
     # only install kafka if java is not installed.
     package { "${::kafka::package_name}":
       ensure  => present,
-      require => Package[$::kafka::java_package]
+      require => Package["${::kafka::java_package}"]
     }
   } else {
     package { "${::kafka::package_name}":
