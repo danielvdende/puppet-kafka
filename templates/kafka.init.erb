@@ -17,7 +17,7 @@ KAFKA_USER=<%= @user %>
 DAEMON="/opt/kafka/bin/kafka-server-start.sh"
 DAEMON_OPTS="<%= @conf_dir + "/server.properties"%>"
 export KAFKA_JMX_OPTS="<%= @jmx_opts %>"
-CMD= "KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > var/log/kafka/server.out 2> /var/log/kafka/server.err &"
+CMD= "KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > /var/log/kafka/server.out 2> /var/log/kafka/server.err &"
 
 
 start() {
@@ -37,7 +37,7 @@ start() {
       start
     fi
   else
-    daemon —user $KAFKA_USER $CMD
+    daemon --user $KAFKA_USER $CMD
     sleep 2
     PID=`ps ax | grep -E '[k]afka.Kafka' | awk '{print $1}'`
     echo $PID > $PID_FILE;
