@@ -7,6 +7,9 @@
 # description: Apache Kafka is a distributed publish-subscribe messaging system
 # pidfile: /var/run/kafka.pid
 
+#source function library
+. /etc/rc.d/init.d/functions
+
 NAME=<%= @service_name %>
 PID_FILE=/var/run/$NAME.pid
 KAFKA_USER=<%= @user %>
@@ -14,6 +17,8 @@ KAFKA_USER=<%= @user %>
 DAEMON="/opt/kafka/bin/kafka-server-start.sh"
 DAEMON_OPTS="<%= @conf_dir + "/server.properties"%>"
 export KAFKA_JMX_OPTS="<%= @jmx_opts %>"
+CMD= "KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > var/log/kafka/server.out 2> /var/log/kafka/server.err &"
+
 
 start() {
   ulimit -n 65536
@@ -32,7 +37,7 @@ start() {
       start
     fi
   else
-    /bin/su $KAFKA_USER -c "KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > /var/log/kafka/server.out 2> /var/log/kafka/server.err &"
+    daemon —user $KAFKA_USER $CMD
     sleep 2
     PID=`ps ax | grep -E '[k]afka.Kafka' | awk '{print $1}'`
     echo $PID > $PID_FILE;
@@ -86,7 +91,7 @@ case "$1" in
   restart)
     echo "Restarting daemon: "$NAME
 	  stop
-    sleep 2
+    sleep 5
     start
 	;;
 
