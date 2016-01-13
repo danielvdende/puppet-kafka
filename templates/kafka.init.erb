@@ -36,7 +36,7 @@ start() {
       start
     fi
   else
-    daemon --user $KAFKA_USER $CMD
+    daemon --user $KAFKA_USER --check $NAME $CMD
     sleep 2
     PID=`ps ax | grep -E '[k]afka.Kafka' | awk '{print $1}'`
     echo $PID > $PID_FILE;
