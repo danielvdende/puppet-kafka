@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "author": "Daniel van der Ende",
   "summary": "This module installs an Apache Kafka broker using either a custom rpm, or confluent's provided rpm",
-  "license": "Apache 2.0",
+  "license": "Apache-2.0",
   "source": "https://github.com/danielvdende/puppet-kafka",
   "project_page": "https://github.com/danielvdende/puppet-kafka",
   "issues_url": "https://github.com/danielvdende/puppet-kafka/issues",
