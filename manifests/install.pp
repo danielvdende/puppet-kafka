@@ -3,11 +3,14 @@
 # This class is called from kafka for install.
 #
 class kafka::install {
-  $conf_dir     = $::kafka::conf_dir
-  $jmx_opts     = $::kafka::jmx_opts
-  $user         = $::kafka::user
-  $group        = $::kafka::group
-  $service_name = $::kafka::service_name
+  $app_log_dir        = $::kafka::app_log_dir
+  $conf_dir           = $::kafka::conf_dir
+  $group              = $::kafka::group
+  $init_script        = $::kafka::init_script
+  $jmx_opts           = $::kafka::jmx_opts
+  $service_name       = $::kafka::service_name
+  $startup_script_dir = $::kafka::startup_script_dir
+  $user               = $::kafka::user
 
   # Add repositories to package manager via this module if desired.
   if $::kafka::manage_repo{
@@ -29,11 +32,11 @@ class kafka::install {
     }
   }
 
-  group { $::kafka::group:
+  group { $group:
     ensure => present,
   }
 
-  user { $::kafka::user:
+  user { $user:
     ensure  => present,
     shell   => '/bin/bash',
     require => Group[$::kafka::group]
@@ -44,7 +47,7 @@ class kafka::install {
       mode   => '0755',
       owner  => 'root',
       group  => 'root',
-      content => template('kafka/kafka.init.erb'),
+      content => template($init_script),
       require => Package["${::kafka::package_name}"]
     }
   }

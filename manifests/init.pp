@@ -18,6 +18,7 @@ class kafka (
   $delete_topic_enable                            = $::kafka::params::delete_topic_enable,
   $fetch_purgatory_purge_interval_requests        = $::kafka::params::fetch_purgatory_purge_interval_requests,
   $group                                          = $::kafka::params::group,
+  $init_script                                    = $::kafka::params::init_script,
   $install_java                                   = $::kafka::params::install_java,
   $install_service                                = $::kafka::params::install_service,
   $java_package                                   = $::kafka::params::java_package,
@@ -75,6 +76,7 @@ class kafka (
   $socket_receive_buffer_bytes                    = $::kafka::params::socket_receive_buffer_bytes,
   $socket_request_max_bytes                       = $::kafka::params::socket_request_max_bytes,
   $socket_send_buffer_bytes                       = $::kafka::params::socket_send_buffer_bytes,
+  $startup_script_dir                             = $::kafka::params::startup_script_dir,
   $user                                           = $::kafka::params::user,
   $zookeeper_connect                              = $::kafka::params::zookeeper_connect,
   $zookeeper_connection_timeout_ms                = $::kafka::params::zookeeper_connection_timeout_ms,
@@ -97,6 +99,7 @@ class kafka (
   validate_bool($delete_topic_enable)
   validate_integer($fetch_purgatory_purge_interval_requests)
   validate_string($group)
+  validate_string($init_script)
   validate_bool($install_java)
   validate_bool($install_service)
   validate_string($java_package)
@@ -154,6 +157,7 @@ class kafka (
   validate_integer($socket_receive_buffer_bytes)
   validate_integer($socket_request_max_bytes)
   validate_integer($socket_send_buffer_bytes)
+  validate_string($startup_script_dir)
   validate_string($user)
   validate_array($zookeeper_connect)
   validate_integer($zookeeper_connection_timeout_ms)

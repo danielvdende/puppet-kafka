@@ -299,6 +299,7 @@ class kafka::params {
   $delete_topic_enable                            = false
   $fetch_purgatory_purge_interval_requests        = 10000
   $group                                          = 'kafka'
+  $init_script                                    = 'kafka/kafka.init.erb'
   $install_java                                   = true
   $install_service                                = true
   $java_package                                   = 'java-1.8.0-openjdk'
@@ -356,6 +357,7 @@ class kafka::params {
   $socket_receive_buffer_bytes                    = 102400
   $socket_request_max_bytes                       = 104857600
   $socket_send_buffer_bytes                       = 102400
+  $startup_script_dir                             = '/opt/kafka/bin'
   $user                                           = 'kafka'
   $zookeeper_connect                              = undef
   $zookeeper_connection_timeout_ms                = 6000

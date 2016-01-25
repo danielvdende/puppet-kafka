@@ -2,10 +2,10 @@
 
 1. [Overview](#overview)
 2. [Module Description - What the module does and why it is useful](#module-description)
-3. [Setup - The basics of getting started with confluent_kafka](#setup)
-    * [What confluent_kafka affects](#what-confluent_kafka-affects)
+3. [Setup - The basics of getting started with puppet-kafka](#setup)
+    * [What puppet-kafka affects](#what-puppet-kafka-affects)
     * [Setup requirements](#setup-requirements)
-    * [Beginning with confluent_kafka](#beginning-with-confluent_kafka)
+    * [Beginning with puppet-kafka](#beginning-with-puppet_kafka)
 4. [Usage - Configuration options and additional functionality](#usage)
 5. [Reference - An under-the-hood peek at what the module is doing and how](#reference)
 5. [Limitations - OS compatibility, etc.](#limitations)
@@ -13,61 +13,53 @@
 
 ## Overview
 
-Unofficial module for install and managing Confluent's (http://confluent.io/) distribution of Kafka.
-
-Currently only tested on Ubuntu 12.04
-
-[![Build Status](https://travis-ci.org/chartbeat-labs/puppet-confluent-kafka.svg)](https://travis-ci.org/chartbeat-labs/puppet-confluent-kafka)
+Unofficial module for install and managing Apache Kafka. Detached fork of
+chartbeat-labs' [module](https://github.com/chartbeat-labs/puppet-confluent-kafka).
+Default installation of Confluent's distribution of Kafka is enabled.
 
 ## Module Description
 
-Module that manages the installation and configuration of Confluent's distribution of Kafka.  Currently only supports brokers
+Module that manages the installation and configuration of Apache Kafka (default to Confluent's distribution of Kafka).
+Currently only supports brokers.
 
 ## Setup
 
-### What confluent_kafka affects
+### What puppet-kafka affects
 
-* Installs Kafka package, service and java if specified
+* Installs Kafka package, service and Java if specified
 
-### Beginning with confluent_kafka
-
+### Beginning with puppet-kafka
+Two parameters, `broker_id` and `zookeeper_connect` are required. Full documentation
+of all parameters that can be passed can be found in [`kafka::params`]
 ```puppet
-    class { 'confluent_kafka': }
+    class { 'kafka':
+      broker_id       => 1,
+      zookeer_connect => 'localhost:2181'
+    }
 ```
 
 ## Usage
 
 ###Classes
 
-####Class: `confluent_kafka`
+####Class: `kafka`
 Main class for the module, will install the package
-
-###Types:
-
-####Type: `confluent_kafka::topic`
-Create/Delete topic in cluster
-```puppet
-    confluent_kafka::topic { 'topic_name':
-      ensure             => present,
-      replication_factor => 3,
-      partitions         => 16,
-    }
-```
 
 ## Reference
 
 ###Classes
 ####Public Classes
- * [`confluent_kafka`]
+ * [`kafka`]
 
 ####Private Classes
- * [`confluent_kafka::config`]
- * [`confluent_kafka::install`]
- * [`confluent_kafka::service`]
- * [`confluent_kafka::params`]
+ * [`kafka::config`]
+ * [`kafka::install`]
+ * [`kafka::service`]
+ * [`kafka::params`]
+ * [`kafka::repo`]
 
 ## Limitations
 This module is tested on the following platforms:
 
- * Ubuntu 12.04
-
+ * CentOS/RHEL 6
+ *

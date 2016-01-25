@@ -74,8 +74,8 @@ class kafka::config {
 
   # specify the kafka user for all files/dirs to be created
   File {
-    owner   => $::kafka::user,
-    group   => $::kafka::group,
+    owner   => $user,
+    group   => $group,
     mode    => '0644',
     notify  => $notify_service,
   }
