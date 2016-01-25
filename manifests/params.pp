@@ -284,12 +284,13 @@
 # $zookeeper_sync_time_ms::                         How far a Zookeeper follower can be behind the Zookeeper leader
 #                                                   type: integer
 class kafka::params {
+  $advertised_hostname                            = '127.0.0.1'
   $app_log_dir                                    = '/var/log/kafka'
   $auto_create_topics_enable                      = true
   $auto_leader_rebalance_enable                   = true
   $background_threads                             = 4
   $broker_id                                      = undef
-  $conf_dir                                       = '/etc/kafka'
+  $conf_dir                                       = '/opt/kafka/config'
   $controlled_shutdown_enable                     = true
   $controlled_shutdown_max_retries                = 3
   $controlled_shutdown_retry_backoff_ms           = 5000
@@ -299,6 +300,7 @@ class kafka::params {
   $delete_topic_enable                            = false
   $fetch_purgatory_purge_interval_requests        = 10000
   $group                                          = 'kafka'
+  $hostname                                       = '127.0.0.1'
   $init_script                                    = 'kafka/kafka.init.erb'
   $install_java                                   = true
   $install_service                                = true

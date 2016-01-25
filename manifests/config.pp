@@ -3,6 +3,7 @@
 # This class is called from kafka for service config.
 #
 class kafka::config {
+  $advertised_hostname                            = $::kafka::advertised_hostname
   $auto_create_topics_enable                      = $::kafka::auto_create_topics_enable
   $auto_leader_rebalance_enable                   = $::kafka::auto_leader_rebalance_enable
   $background_threads                             = $::kafka::background_threads
@@ -16,6 +17,7 @@ class kafka::config {
   $delete_topic_enable                            = $::kafka::delete_topic_enable
   $fetch_purgatory_purge_interval_requests        = $::kafka::fetch_purgatory_purge_interval_requests
   $group                                          = $::kafka::group
+  $hostname                                       = $::kafka::hostname
   $leader_imbalance_check_interval_seconds        = $::kafka::leader_imbalance_check_interval_seconds
   $leader_imbalance_per_broker_percentage         = $::kafka::leader_imbalance_per_broker_percentage
   $log_cleaner_backoff_ms                         = $::kafka::log_cleaner_backoff_ms

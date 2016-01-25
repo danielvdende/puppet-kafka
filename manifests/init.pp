@@ -3,6 +3,7 @@
 # Used to setup, install and intialize a Kafka broker
 #
 class kafka (
+  $advertised_hostname                            = $::kafka::params::advertised_hostname,
   $app_log_dir                                    = $::kafka::params::app_log_dir,
   $auto_create_topics_enable                      = $::kafka::params::auto_create_topics_enable,
   $auto_leader_rebalance_enable                   = $::kafka::params::auto_leader_rebalance_enable,
@@ -18,6 +19,7 @@ class kafka (
   $delete_topic_enable                            = $::kafka::params::delete_topic_enable,
   $fetch_purgatory_purge_interval_requests        = $::kafka::params::fetch_purgatory_purge_interval_requests,
   $group                                          = $::kafka::params::group,
+  $hostname                                       = $::kafka::params::hostname,
   $init_script                                    = $::kafka::params::init_script,
   $install_java                                   = $::kafka::params::install_java,
   $install_service                                = $::kafka::params::install_service,
@@ -84,6 +86,7 @@ class kafka (
   $zookeeper_sync_time_ms                         = $::kafka::params::zookeeper_sync_time_ms
 ) inherits kafka::params {
 
+  validate_string($advertised_hostname)
   validate_absolute_path($app_log_dir)
   validate_bool($auto_create_topics_enable)
   validate_bool($auto_leader_rebalance_enable)
@@ -99,6 +102,7 @@ class kafka (
   validate_bool($delete_topic_enable)
   validate_integer($fetch_purgatory_purge_interval_requests)
   validate_string($group)
+  validate_string($hostname)
   validate_string($init_script)
   validate_bool($install_java)
   validate_bool($install_service)
