@@ -334,6 +334,8 @@ class kafka::params {
   $manage_repo                                    = true
   $manage_service                                 = true
   $max_nofiles                                    = 65535
+  $max_stacksize                                  = 10240
+  $max_corefiles_size                             = 'unlimited'
   $message_max_bytes                              = 1000000
   $num_io_threads                                 = 8
   $num_network_threads                            = 3

@@ -8,6 +8,9 @@ class kafka::install {
   $group              = $::kafka::group
   $init_script        = $::kafka::init_script
   $jmx_opts           = $::kafka::jmx_opts
+  $max_corefiles_size = $::kafka::max_corefiles_size
+  $max_nofiles        = $::kafka::max_nofiles
+  $max_stacksize      = $::kafka::max_stacksize
   $service_name       = $::kafka::service_name
   $startup_script_dir = $::kafka::startup_script_dir
   $user               = $::kafka::user

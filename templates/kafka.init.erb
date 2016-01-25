@@ -20,9 +20,9 @@ export KAFKA_JMX_OPTS="<%= @jmx_opts %>"
 CMD="KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > <%= @app_log_dir + "/server.out"%> 2> <%= @app_log_dir + "/server.err"%> &"
 
 start() {
-  ulimit -n 65536
-  ulimit -s 10240
-  ulimit -c unlimited
+  ulimit -n <%= @max_nofiles %>
+  ulimit -s <%= @max_stacksize %>
+  ulimit -c <%= @max_corefiles_size %>
   if [ -f $PID_FILE ]
   then
     PID=`cat $PID_FILE`
