@@ -14,7 +14,8 @@ NAME=<%= @service_name %>
 PID_FILE=/var/run/$NAME.pid
 KAFKA_USER=<%= @user %>
 
-DAEMON="<%= startup_script_dir + "/kafka-server-start.sh"%>"
+MAX_WAIT=30 #wait for max 30 seconds when restarting kafka, to allow for port release of JMX port.
+DAEMON="<%= @startup_script_dir + "/kafka-server-start.sh"%>"
 DAEMON_OPTS="<%= @conf_dir + "/server.properties"%>"
 export KAFKA_JMX_OPTS="<%= @jmx_opts %>"
 CMD="KAFKA_JMX_OPTS=\"$KAFKA_JMX_OPTS\" $DAEMON $DAEMON_OPTS > <%= @app_log_dir + "/server.out"%> 2> <%= @app_log_dir + "/server.err"%> &"
@@ -50,7 +51,7 @@ stop() {
     echo "$PID_FILE does not exist, process is not running"
     return 1
   else
-    kill `cat $PID_FILE`;
+    killproc -p $PID_FILE -d $MAX_WAIT
     rm -f $PID_FILE;
     echo "$NAME stopped"
     return 0
